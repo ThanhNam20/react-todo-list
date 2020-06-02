@@ -1,26 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import TodoInput from "./components/TodoInput";
+import TodoList from "./components/TodoList";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { v4 as uuid } from "uuid";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    items: [],
+    id: uuid(),
+    item: "",//Khoi tao o input la 1 empty string
+    editItem: false,
+  };
+  handleChange = (e) => {
+    this.setState({
+      item: e.target.value, //Update gia tri cho oo input
+    });
+  };
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const newItem = {
+      id: this.state.id,
+      title: this.state.item
+    }
+    console.log(newItem);
+    const updatedItems = [...this.state.items, newItem]; //Copy toan bo gia tri items tu state vao update, them obj newItem vao 
+    this.setState({
+      items: updatedItems,
+      item: '',
+      id: uuid(),
+      editItem:false
+    })
+  };
+  render() {
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-10 mx-auto col-md-8 mt-4">
+            <h3 className="text-capitalize text-center">Todo Input</h3>
+            <TodoInput
+              item={this.state.item}
+              handleChange={this.handleChange}
+              handleSubmit={this.handleSubmit}
+            />
+            <TodoList items={this.state.items}/>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
