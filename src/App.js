@@ -35,6 +35,14 @@ class App extends Component {
       items:[] // Set items = rong la dc
     })
   }
+
+  handleDetele = (id)=>{ // Xoa item
+    const filterItems = this.state.items.filter(item => item.id !== id)
+    this.setState({
+      items:filterItems
+    })
+  }
+
   render() {
     return (
       <div className="container">
@@ -46,7 +54,7 @@ class App extends Component {
               handleChange={this.handleChange}
               handleSubmit={this.handleSubmit}
             />
-            <TodoList items={this.state.items} clearList={this.clearList} />
+            <TodoList items={this.state.items} clearList={this.clearList} handleDetele={this.handleDetele} />
           </div>
         </div>
       </div>
