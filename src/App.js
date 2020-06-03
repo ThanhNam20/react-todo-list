@@ -8,7 +8,7 @@ class App extends Component {
   state = {
     items: [],
     id: uuid(),
-    item: "",//Khoi tao o input la 1 empty string
+    item: "", //Khoi tao o input la 1 empty string
     editItem: false,
   };
   handleChange = (e) => {
@@ -20,28 +20,41 @@ class App extends Component {
     e.preventDefault();
     const newItem = {
       id: this.state.id,
-      title: this.state.item
-    }
-    const updatedItems = [...this.state.items, newItem]; //Copy toan bo gia tri items tu state vao update, them obj newItem vao 
+      title: this.state.item,
+    };
+    const updatedItems = [...this.state.items, newItem]; //Copy toan bo gia tri items tu state vao update, them obj newItem vao
     this.setState({
       items: updatedItems,
-      item: '',
+      item: "",
       id: uuid(),
-      editItem:false
-    })
+      editItem: false
+    });
   };
   clearList = () => {
     this.setState({
-      items:[] // Set items = rong la dc
-    })
-  }
+      items: [], // Set items = rong la dc
+    });
+  };
 
-  handleDetele = (id)=>{ // Xoa item
-    const filterItems = this.state.items.filter(item => item.id !== id)
+  handleDetele = (id) => {
+    // Xoa item
+    const filterItems = this.state.items.filter((item) => item.id !== id); // Tra ve nhung gia tri item ko giong voi id dang handle
     this.setState({
-      items:filterItems
-    })
-  }
+      items: filterItems,
+    });
+  };
+
+  handleEdit = (id) => {
+    const filterItems = this.state.items.filter((item) => item.id !== id); //tra ve phan tu ko giong voi id item
+    const selectedItems = this.state.items.find((item) => item.id === id); // tra ve phan tu giong voi id item
+
+    this.setState({
+      items: filterItems,
+      item: selectedItems.title,
+      editItem: true,
+      id: id
+    });
+  };
 
   render() {
     return (
@@ -53,8 +66,14 @@ class App extends Component {
               item={this.state.item}
               handleChange={this.handleChange}
               handleSubmit={this.handleSubmit}
+              editItem={this.state.editItem}
             />
-            <TodoList items={this.state.items} clearList={this.clearList} handleDetele={this.handleDetele} />
+            <TodoList
+              items={this.state.items}
+              clearList={this.clearList}
+              handleDetele={this.handleDetele}
+              handleEdit={this.handleEdit}
+            />
           </div>
         </div>
       </div>
